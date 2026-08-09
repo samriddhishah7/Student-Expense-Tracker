@@ -1,6 +1,6 @@
 # Student Expense Tracker
 
-A small web application to record and manage a student's expenses. The project follows a simple architecture with a Flask backend, a frontend using plain HTML/CSS/JavaScript, and a SQLite database for persistence. Documentation is in the `docs/` directory and contains the authoritative requirements, architecture, database, API, and development guidelines.
+A small web application to record and manage a student's expenses. The project follows a simple architecture with a Flask backend, a frontend using plain HTML/CSS/JavaScript, and a SQLite database [...]
 
 Important docs:
 
@@ -28,6 +28,10 @@ Monetary values
 
 Testing
 
-- Tests use pytest. Tests should use an in-memory SQLite database for isolation using the appropriate connection configuration for the chosen backend implementation. Tests must not modify the development database.
+- Tests use pytest. For isolation, tests should use a temporary SQLite database file (recommended) created with pytest's `tmp_path` fixture and initialized using the project's `init_db_file()` helper. This avoids connection-lifetime issues that can arise with in-memory `:memory:` databases when the initialization connection is closed.
+
+  If you prefer to use `:memory:` databases for tests, ensure the test harness maintains a persistent connection for the lifetime of the test (this is more complex and error-prone). The temporary-file approach is simpler and recommended for Milestone 1 and 2.
+
+- Tests must not modify the development database. Always pass an explicit `db_path` (or use the provided test fixtures) to database-layer functions in tests.
 
 See the `docs/` folder for full implementation and development guidelines.
